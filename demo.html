@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <style>
+            * {
+                margin: 0;
+                box-sizing: border-box;
+            }
+            .icon_svg {
+                height: 100%;
+                width: 100%;
+                display: block;
+                fill: currentColor;
+            }
+            /*如果是780宽的设计稿，max-width:3.9rem*/
+            html {
+                font-size: 100px;
+            }
+            /*普通手机 竖屏*/
+            @media screen and (orientation: portrait) {
+                html {
+                    font-size: 26.66666667vw;
+                }
+                /*设计稿750宽度*/
+            }
+            /*普通手机 横屏*/
+            @media screen and (orientation: landscape) {
+                html {
+                    font-size: 26.66666667vh;
+                }
+                /*设计稿750高度*/
+            }
+            /*Pad类型-横屏*/
+            @media screen and (min-width: 1000px) and (orientation: landscape) {
+                html {
+                    font-size: 110px;
+                }
+            }
+            /*Pad类型-竖屏*/
+            @media screen and (min-width: 768px) and (orientation: portrait) {
+                html {
+                    font-size: 110px;
+                }
+            }
+            /* 折叠屏手机 屏幕展开的时候横竖屏的rem根字号都一样*/
+            @media screen and (device-width: 677px) and (device-height: 764px),
+                (device-width: 764px) and (device-height: 677px),
+                (device-width: /* 华为 Mate X2 */ 734px) and (device-height: 827px),
+                (device-width: 827px) and (device-height: 734px),
+                (device-width: /* 华为 Mate XS */ 902px) and (device-height: 677px),
+                (device-width: 677px) and (device-height: 902px),
+                (device-width: /* 小米 Mix Fold */ 699px) and (device-height: 652px),
+                (device-width: 652px) and (device-height: 699px),
+                (device-width: /* oppo Find N */ 674px) and (device-height: 842px),
+                (device-width: 842px) and (device-height: 674px) {
+                /* 三星 fold */
+                html {
+                    font-size: 110px;
+                }
+            }
+        </style>
+        <style>
+            .QMPlayer {
+                position: fixed;
+                bottom: 0;
+                display: flex;
+                width: 100vw;
+                height: 90px;
+                min-width: 800px;
+                padding: 15px;
+                background-color: black;
+            }
+            .QMPlayer__header {
+                display: flex;
+            }
+            .QMPlayer__header__cover {
+                display: block;
+                border-radius: 2px;
+                width: 56px;
+                height: 56px;
+                margin-right: 15px;
+            }
+            .QMPlayer__header__info {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+            .QMPlayer__header__info__title {
+                font-size: 14px;
+                color: white;
+            }
+            .QMPlayer__header__info__singer {
+                font-size: 12px;
+                color: rgb(179, 179, 179);
+            }
+            .QMPlayer__main {
+                justify-self: center;
+            }
+            .QMPlayer__main__control {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .QMPlayer__main__control__svg {
+                display: block;
+                width: 16px;
+                height: 16px;
+                color: #fff;
+            }
+            .QMPlayer__main__control__play {
+                display: block;
+                width: 16px;
+                height: 16px;
+                color: #fff;
+            }
+        </style>
+        <div class="QMPlayer">
+            <div class="QMPlayer__header">
+                <img src="./img/I' am OK_109951164124479906.png" class="QMPlayer__header__cover" />
+                <div class="QMPlayer__header__info">
+                    <span class="QMPlayer__header__info__title">I' am OK</span>
+                    <span class="QMPlayer__header__info__singer">陶喆</span>
+                </div>
+            </div>
+            <div class="QMPlayer__main">
+                <div class="QMPlayer__main__control">
+                    <a class="QMPlayer__main__control__svg">
+                        <svg class="icon_svg" viewBox="0 0 16 16">
+                            <path
+                                d="M3.3 1a.7.7 0 0 1 .7.7v5.15l9.95-5.744a.7.7 0 0 1 1.05.606v12.575a.7.7 0 0 1-1.05.607L4 9.149V14.3a.7.7 0 0 1-.7.7H1.7a.7.7 0 0 1-.7-.7V1.7a.7.7 0 0 1 .7-.7h1.6z"
+                            ></path>
+                        </svg>
+                    </a>
+                    <a class="QMPlayer__main__control__play">
+                        <svg class="icon_svg" viewBox="0 0 32 32">
+                            <path
+                                d="M16 0c8.837 0 16 7.163 16 16s-7.163 16-16 16c-8.837 0-16-7.163-16-16s7.163-16 16-16zM22.399 17.368c0.72-0.488 0.72-1.706 0-2.193l-7.98-5.406c-0.72-0.487-1.619 0.122-1.619 1.096v10.278c0 0.974 0.899 1.584 1.619 1.097l7.98-4.873z"
+                            ></path>
+                        </svg>
+                    </a>
+                    <a class="QMPlayer__main__control__svg">
+                        <svg class="icon_svg" viewBox="0 0 16 16">
+                            <path
+                                d="M12.7 1a.7.7 0 0 0-.7.7v5.15L2.05 1.107A.7.7 0 0 0 1 1.712v12.575a.7.7 0 0 0 1.05.607L12 9.149V14.3a.7.7 0 0 0 .7.7h1.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7h-1.6z"
+                            ></path>
+                        </svg>
+                    </a>
+                </div>
+                <div class="QMPlayer__main__progress"></div>
+            </div>
+            <div class="QMPlayer__footer"></div>
+        </div>
+    </body>
+    <script></script>
+</html>
