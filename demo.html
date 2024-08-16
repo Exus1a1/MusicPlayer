@@ -8,6 +8,14 @@
 
     <body>
         <style>
+            html {
+                -webkit-touch-callout: none;
+                -webkit-user-select: none;
+                -khtml-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
             * {
                 margin: 0;
                 box-sizing: border-box;
@@ -83,9 +91,9 @@
                 position: fixed;
                 bottom: 0;
                 width: 100vw;
-                height: 90px;
-                min-width: 600px;
-                padding: 15px;
+                height: 0.9rem;
+                min-width: 6rem;
+                padding: 0.15rem;
                 background-color: black;
             }
 
@@ -97,10 +105,10 @@
 
             .QMPlayer__header__cover {
                 display: block;
-                border-radius: 2px;
-                width: 60px;
+                border-radius: 0.02rem;
+                width: 0.6rem;
                 height: 100%;
-                margin-right: 15px;
+                margin-right: 0.15rem;
             }
 
             .QMPlayer__header__info {
@@ -110,12 +118,12 @@
             }
 
             .QMPlayer__header__info__title {
-                font-size: 14px;
+                font-size: 0.14rem;
                 color: white;
             }
 
             .QMPlayer__header__info__singer {
-                font-size: 12px;
+                font-size: 0.12rem;
                 color: rgb(179, 179, 179);
             }
 
@@ -131,7 +139,7 @@
 
             .QMPlayer__main__control {
                 display: flex;
-                width: 200px;
+                width: 2rem;
                 justify-content: space-around;
                 align-items: center;
                 padding: 5px 0;
@@ -139,8 +147,8 @@
 
             .QMPlayer__main__control__svg {
                 display: block;
-                width: 20px;
-                height: 20px;
+                width: 0.2rem;
+                height: 0.2rem;
                 color: rgb(179, 179, 179);
             }
 
@@ -150,42 +158,38 @@
 
             .QMPlayer__main__control__play {
                 display: block;
-                width: 32px;
-                height: 32px;
+                width: 0.32rem;
+                height: 0.32rem;
                 color: #fff;
             }
 
             .QMPlayer__main__progress {
                 position: relative;
                 width: 100%;
-                min-width: 220px;
-                max-width: 440px;
-                height: 3px;
-                margin-top: 10px;
+                min-width: 2.2rem;
+                max-width: 4.4rem;
+                height: 0.03rem;
+                margin-top: 0.1rem;
                 background-color: rgb(179, 179, 179);
-                border-radius: 1px;
+                border-radius: 0.01rem;
             }
 
             .QMPlayer__main__progress__bar {
-                width: 50%;
-                height: 3px;
+                width: 0;
+                height: 0.03rem;
                 position: relative;
-                background-color: #fff;
-            }
-
-            .QMPlayer__main__progress:hover .QMPlayer__main__progress__bar {
                 background-color: #1db954;
             }
 
             .QMPlayer__main__progress__bar__point {
                 visibility: hidden;
-                width: 10px;
-                height: 10px;
+                width: 0.1rem;
+                height: 0.1rem;
                 border-radius: 50%;
                 background-color: #fff;
                 position: absolute;
+                right: -0.05rem;
                 top: 50%;
-                right: -5px;
                 transform: translateY(-50%);
             }
 
@@ -198,7 +202,7 @@
                 float: right;
                 height: 100%;
                 display: flex;
-                width: 150px;
+                width: 1.5rem;
                 justify-content: space-around;
                 align-items: center;
             }
@@ -206,32 +210,32 @@
             .QMPlayer__footer__control {
                 position: relative;
                 display: block;
-                width: 16px;
-                height: 16px;
+                width: 0.16rem;
+                height: 0.16rem;
                 color: rgb(179, 179, 179);
             }
 
             .QMPlayer__header__expand {
                 position: absolute;
-                width: 20px;
-                height: 20px;
-                border-radius: 10px;
+                width: 0.2rem;
+                height: 0.2rem;
+                border-radius: 0.1rem;
                 background-color: rgba(0, 0, 0, 0.7);
-                top: 2px;
-                left: 38px;
+                top: 0.02rem;
+                left: 0.38rem;
             }
 
             .QMPlayer__header__expand__button {
                 display: block;
-                width: 14px;
-                height: 14px;
-                margin: 2px auto;
+                width: 0.14rem;
+                height: 0.14rem;
+                margin: 0.03rem auto;
                 color: #fff;
             }
 
             .QMPlayer__footer .QMPlayer__footer__svg {
-                width: 22px;
-                height: 22px;
+                width: 0.22rem;
+                height: 0.22rem;
             }
 
             .QMPlayer__footer__control:hover {
@@ -242,12 +246,12 @@
                 position: fixed;
                 bottom: 0;
                 left: 0;
-                height: calc(100vh - 90px);
+                height: calc(100vh - 0.9rem);
                 width: 100vw;
-                min-width: 600px;
-                min-height: 700px;
+                min-width: 6rem;
+                min-height: 8rem;
                 background-color: #121212;
-                margin-bottom: 90px;
+                margin-bottom: 0.9rem;
             }
 
             .QMPlayer__detail__wave {
@@ -255,17 +259,17 @@
                 bottom: 0;
                 left: 50%;
                 transform: translateX(-50%);
-                width: 500px;
-                height: 80px;
+                width: 5rem;
+                height: 0.8rem;
                 background-color: #1db954;
-                font-size: 40px;
+                font-size: 0.4rem;
             }
 
             .QMPlayer__detail__cover {
                 display: block;
-                border-radius: 150px;
-                width: 300px;
-                height: 300px;
+                border-radius: 1.5rem;
+                width: 3rem;
+                height: 3rem;
                 position: absolute;
                 left: 50%;
                 top: 45%;
@@ -277,51 +281,53 @@
                 position: absolute;
                 top: 45%;
                 left: 50%;
-                width: 500px;
-                height: 60vh;
-                transform: translate(-50%, -40%);
+                width: 4rem;
+                height: 70%;
+                max-height: 10rem;
+                min-height: 5rem;
+                transform: translate(-50%, -45%);
                 background-color: #1db954;
                 color: #fff;
-                font-size: 40px;
+                font-size: 0.4rem;
             }
 
             .QMPlayer__detail__name {
                 text-align: center;
                 width: 100%;
-                margin-top: 50px;
-                font-size: 25px;
+                margin-top: 0.5rem;
+                font-size: 0.25rem;
                 color: #fff;
             }
 
             .QMPlayer__detail__singer {
                 text-align: center;
                 width: 100%;
-                font-size: 20px;
+                font-size: 0.2rem;
                 color: #fff;
             }
 
             .QMPlayer__footer__control__popup {
                 position: absolute;
-                bottom: 30px;
-                font-size: 14px;
+                bottom: 0.3rem;
+                font-size: 0.14rem;
                 color: #fff;
                 display: flex;
                 flex-direction: column;
                 text-align: center;
                 left: 50%;
                 transform: translateX(-50%);
-                width: 110px;
-                height: 125px;
+                width: 1.1rem;
+                height: 1.25rem;
                 background-color: #1db954;
             }
 
             .QMPlayer__list {
                 position: fixed;
-                font-size: 20px;
-                bottom: 90px;
-                height: calc(100vh - 90px);
-                min-height: 600px;
-                width: 250px;
+                font-size: 0.2rem;
+                bottom: 0.9rem;
+                height: calc(100vh - 0.9rem);
+                min-height: 8rem;
+                width: 2.4rem;
                 right: 0;
                 background-color: #fff;
             }
@@ -329,20 +335,25 @@
             .QMPlayer__main__progress__current {
                 position: absolute;
                 color: #fff;
-                font-size: 10px;
-                left: -30px;
-                top: -7.5px;
+                font-size: 0.1rem;
+                line-height: 0.1rem;
+                left: -0.3rem;
+                top: 50%;
+                transform: translateY(-50%);
             }
 
             .QMPlayer__main__progress__end {
                 position: absolute;
                 color: #fff;
-                font-size: 10px;
-                right: -30px;
-                top: -7.5px;
+                font-size: 0.1rem;
+                line-height: 0.1rem;
+                right: -0.3rem;
+                top: 50%;
+                transform: translateY(-50%);
             }
         </style>
-        <!-- <div class="QMPlayer">
+        <div class="QMPlayer">
+            <audio src="QMPlayer__audio" id="QMPlayer__audio"></audio>
             <div class="QMPlayer__detail">
                 <div class="QMPlayer__detail__name">黑色柳丁</div>
                 <div class="QMPlayer__detail__singer">陶喆</div>
@@ -414,15 +425,68 @@
                             ></path>
                             <path d="M11.5 13.614a5.752 5.752 0 0 0 0-11.228v1.55a4.252 4.252 0 0 1 0 8.127v1.55z"></path>
                         </svg>
+                        <div class="volumn_slide" id="volumn_slide">
+                            <div class="volumn_slide__slidebar" id="volumn_slide__slidebar">
+                                <div class="volumn_slide__slidebar__point" id="volumn_slide__slidebar__point"></div>
+                            </div>
+                        </div>
                     </a>
                 </div>
-                <div class="QMPlayer__main__progress">
+                <div class="QMPlayer__main__progress" id="progress-container">
                     <div class="QMPlayer__main__progress__current">0:00</div>
-                    <div class="QMPlayer__main__progress__bar">
-                        <div class="QMPlayer__main__progress__bar__point"></div>
+                    <div class="QMPlayer__main__progress__bar" id="progress-bar">
+                        <div class="QMPlayer__main__progress__bar__point" id="progress-point"></div>
                     </div>
                     <div class="QMPlayer__main__progress__end">0:00</div>
                 </div>
+                <script>
+                    const progressBarContainer = document.getElementById('progress-container');
+                    const progressBar = document.getElementById('progress-bar');
+                    const progressPoint = document.getElementById('progress-point');
+
+                    let isDragging = false;
+                    let startX = 0;
+                    let progressBarContainerRect = progressBarContainer.getBoundingClientRect();
+
+                    progressPoint.addEventListener('mousedown', event => {
+                        isDragging = true;
+                        startX = event.clientX - progressBarContainerRect.left;
+                        progressPoint.style.visibility = 'initial'; // 拖动开始时显示进度点
+                    });
+
+                    document.addEventListener('mousemove', event => {
+                        if (!isDragging) return;
+
+                        const offsetX = event.clientX - progressBarContainerRect.left;
+                        const progress = Math.min(1, Math.max(0, offsetX / progressBarContainerRect.width));
+                        updateProgress(progress);
+                    });
+
+                    progressBarContainer.addEventListener('mouseenter', () => {
+                        if (!isDragging) {
+                            progressPoint.style.visibility = 'initial';
+                        }
+                    });
+
+                    document.addEventListener('mouseup', () => {
+                        isDragging = false;
+                        // 拖动结束后隐藏进度点（如果鼠标不在进度条容器内）
+                        if (!progressBarContainer.contains(document.activeElement)) {
+                            progressPoint.style.visibility = 'hidden';
+                        }
+                    });
+
+                    progressBarContainer.addEventListener('click', event => {
+                        const offsetX = event.clientX - progressBarContainerRect.left;
+                        const progress = Math.min(1, Math.max(0, offsetX / progressBarContainerRect.width));
+                        updateProgress(progress);
+                    });
+
+                    function updateProgress(progress) {
+                        // 更新进度条的宽度
+                        progressBar.style.width = `${progress * 100}%`;
+                    }
+                </script>
             </div>
             <div class="QMPlayer__footer">
                 <a class="QMPlayer__footer__control">
@@ -482,7 +546,7 @@
                     </svg>
                 </a>
             </div>
-        </div> -->
+        </div>
         <style>
             .QMPlayer--mobile {
                 position: fixed;
@@ -583,7 +647,12 @@
                 width: 100vw;
                 height: 100vh;
                 background-color: #121212;
+                transition-property: top;
+                transition-duration: 0.5s;
             }
+            /* .QMPlayer--mobile_detail:hover {
+                top: 100vh;
+            } */
             .QMPlayer--mobile_detail__collapse {
                 display: block;
                 margin: 0.1rem;
@@ -592,42 +661,138 @@
                 transform: rotateX(180deg);
             }
 
-            .QMPlayer--mobile_detail__cover {
+            .QMPlayer--mobile_detail__progress__current {
+                position: absolute;
+                top: 0.1rem;
+                color: #fff;
+                font-size: 0.1rem;
+                line-height: 0.1rem;
+                left: 0;
+            }
+
+            .QMPlayer--mobile_detail__progress__end {
+                position: absolute;
+                top: 0.1rem;
+                color: #fff;
+                font-size: 0.1rem;
+                line-height: 0.1rem;
+                right: 0;
+            }
+
+            .QMPlayer--mobile_detail__progress {
+                position: relative;
+                width: 90%;
+                margin: 0 auto 0.3rem;
+                height: 0.03rem;
+                background-color: rgb(179, 179, 179);
+                border-radius: 1px;
+            }
+
+            .QMPlayer--mobile_detail__progress__bar {
+                width: 50%;
+                height: 0.03rem;
+                position: relative;
+                background-color: #1db954;
+            }
+
+            .QMPlayer--mobile_detail__progress__bar__point {
+                width: 0.1rem;
+                height: 0.1rem;
+                border-radius: 50%;
+                background-color: #fff;
+                position: absolute;
+                top: 50%;
+                right: -0.05rem;
+                transform: translateY(-50%);
+            }
+
+            .QMPlayer--mobile_detail__main {
+                height: calc(100vh - 2.3rem);
+                width: 100vw;
+            }
+
+            .QMPlayer--mobile_detail__main__info {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: end;
+            }
+
+            .QMPlayer--mobile_detail__main__info__cover {
                 position: absolute;
                 left: 50%;
-                top: 30%;
+                top: 35%;
                 transform: translate(-50%, -50%);
                 display: block;
                 border-radius: 50%;
             }
 
+            .QMPlayer--mobile_detail__main__info__name {
+                width: 90%;
+                margin: 0 auto 0.02rem;
+                color: #fff;
+                font-size: 0.18rem;
+            }
+
+            .QMPlayer--mobile_detail__main__info__singer {
+                width: 90%;
+                margin: 0 auto 0.15rem;
+                color: rgb(179, 179, 179);
+                font-size: 0.15rem;
+            }
+            .QMPlayer--mobile_detail__main__lyrics {
+                width: 100%;
+                height: 100%;
+                background-color: #1db954;
+            }
+            .QMPlayer--mobile_detail__footer {
+                display: flex;
+                width: 90%;
+                margin: 0 auto 0.15rem;
+                justify-content: space-between;
+                align-items: center;
+                height: 0.5rem;
+                background-color: #121212;
+            }
+
+            .QMPlayer--mobile_detail__footer__control {
+                position: relative;
+                display: block;
+                width: 0.2rem;
+                height: 0.2rem;
+                color: rgb(179, 179, 179);
+            }
+
+            .QMPlayer--mobile_detail__footer .QMPlayer--mobile_detail__footer__svg {
+                width: 22px;
+                height: 22px;
+            }
+
             .QMPlayer--mobile_detail__control {
                 display: flex;
-                width: 200px;
-                justify-content: space-around;
+                width: 90%;
+                margin: 0 auto;
+                justify-content: space-between;
                 align-items: center;
-                padding: 5px 0;
+                padding: 0.05rem 0;
             }
 
             .QMPlayer--mobile_detail__control__svg {
                 display: block;
-                width: 20px;
-                height: 20px;
+                width: 0.2rem;
+                height: 0.2rem;
                 color: rgb(179, 179, 179);
-            }
-
-            .QMPlayer__main__control__svg:active {
-                color: #fff;
             }
 
             .QMPlayer--mobile_detail__control__play {
                 display: block;
-                width: 32px;
-                height: 32px;
+                width: 0.36rem;
+                height: 0.36rem;
                 color: #fff;
             }
         </style>
-        <div class="QMPlayer--mobile_detail">
+        <!-- <div class="QMPlayer--mobile_detail">
             <a class="QMPlayer--mobile_detail__collapse">
                 <svg class="icon_svg" viewBox="0 0 16 16">
                     <path
@@ -635,14 +800,52 @@
                     ></path>
                 </svg>
             </a>
-            <img src="./img/77A7FB8DF3AED8278E65A291928275BA.gif" class="QMPlayer--mobile_detail__cover" />
-
-            <div class="QMPlayer__main__progress">
-                <div class="QMPlayer__main__progress__current">0:00</div>
-                <div class="QMPlayer__main__progress__bar">
-                    <div class="QMPlayer__main__progress__bar__point"></div>
+            <div class="QMPlayer--mobile_detail__main">
+                <div class="QMPlayer--mobile_detail__main__info">
+                    <img src="./img/77A7FB8DF3AED8278E65A291928275BA.gif" class="QMPlayer--mobile_detail__main__info__cover" />
+                    <div class="QMPlayer--mobile_detail__main__info__name">二十二</div>
+                    <div class="QMPlayer--mobile_detail__main__info__singer">陶喆</div>
                 </div>
-                <div class="QMPlayer__main__progress__end">0:00</div>
+                <div class="QMPlayer--mobile_detail__main__lyrics"></div>
+            </div>
+
+            <div class="QMPlayer--mobile_detail__footer">
+                <a class="QMPlayer--mobile_detail__footer__control QMPlayer--mobile_detail__footer__svg">
+                    <svg class="icon_svg" viewBox="0 0 1024 1024">
+                        <path
+                            d="M204.4 524.9c-14.5 1.5-26.2 13.2-27.7 27.7-2.1 19.9 14.6 36.7 34.6 34.6 14.5-1.5 26.2-13.2 27.8-27.8 2-19.9-14.8-36.6-34.7-34.5zM265.4 473.7c21.8-1.9 39.4-19.5 41.4-41.4 2.5-28.5-21.2-52.3-49.7-49.7-21.8 1.9-39.4 19.5-41.4 41.4-2.6 28.4 21.2 52.2 49.7 49.7zM415.8 266.9c-28.5 1.8-51.6 24.9-53.4 53.4-2.2 34.5 26.4 63.1 60.9 60.9 28.5-1.8 51.6-24.9 53.4-53.4 2.1-34.6-26.4-63.1-60.9-60.9zM621.9 253.8c-35.1 2.2-63.4 30.6-65.6 65.6-2.7 42.4 32.4 77.6 74.8 74.8 35.1-2.2 63.4-30.6 65.6-65.6 2.8-42.4-32.3-77.5-74.8-74.8zM966.5 276.4c-0.5-7.6-4-14.6-9.8-19.6l-0.7-0.6c-5.2-4.5-11.9-7-18.8-7-8.3 0-16.2 3.6-21.6 9.9L574 652.4l-43.5 85.5 1.1 0.9-4.9 11.3 11.1-5.9 1.5 1.3 78-54.3 342.3-394c5-5.8 7.4-13.2 6.9-20.8z"
+                            p-id="1518"
+                        />
+                        <path
+                            d="M897.8 476.3c-13.8-1.4-26.7 7.4-30.4 20.7-6.9 24.6-19.3 64.5-35.1 97.8C809.5 643 767.4 710.1 696.7 756c-72.2 46.9-142.7 56.7-189.2 56.7-37 0-72.2-6.1-101.7-17.7-26.9-10.5-46.4-24.6-54.9-39.7-3.4-6.1-7.2-12.9-11.2-20.2-17.2-31.1-36.6-66.5-49.7-77.4-15.9-13.2-39.1-15-59.8-15-8.1 0-40.8 1.3-48.5 1.3-33.1 0-49.4-6.5-56.1-22.4-17.8-42.3-7.3-114.3 26.8-183.4C205.2 331.4 300 253.3 412.6 224c40-10.6 81.2-18.9 121.3-18.9 85.6 0 187.8 32.8 252.5 77.2 11.4 7.8 26.9 5.8 35.7-4.9 10.4-12.6 7.1-31.4-6.8-39.8-23.3-14-57.9-34-86.3-47.1-60.3-27.9-123.7-41.9-189.2-41.9-68.1 0-148.8 16.4-217.2 47.2-78.1 35-135.2 85-179.4 147.5-36.4 51.4-67.8 111.1-80.1 168.7-7.5 35.1-6.8 57.4-2.4 87.8 4.2 29.2 13.4 52.5 26.9 67.5 22.4 25.1 51.5 37.4 89 37.4 13.9 0 56.3-5 63.1-5 7.4 0 12.2 1.2 14.4 3.8 6.4 7.4 14.4 22.4 23.7 39.9 7.5 14.1 15.9 30.1 25.4 45.3 12.1 19.5 36.9 40.4 66.5 55.9 27 14.1 71.9 31 132.2 31 72 0 148.3-23.6 226.7-70.1 74.9-44.4 123-118.9 150.2-173.6 19-38.3 34.7-87.2 43.8-119.1 4.8-17.3-7-34.7-24.8-36.5z"
+                            p-id="1519"
+                        />
+                    </svg>
+                </a>
+                <a class="QMPlayer--mobile_detail__footer__control QMPlayer--mobile_detail__footer__svg">
+                    <svg class="icon_svg" viewBox="0 0 1024 1024">
+                        <path
+                            d="M513.674 734.484h-0.387c-10.256 0-18.557 8.3-18.557 18.558v135.303c0 10.245 8.3 18.555 18.557 18.555h0.387c10.255 0 18.555-8.31 18.555-18.555V753.042c0-10.258-8.3-18.558-18.555-18.558zM336.028 354.035c7.152 7.23 18.783 7.23 25.949 0 7.175-7.224 7.175-18.943 0-26.167L266.794 231.9a18.259 18.259 0 0 0-25.962 0c-7.165 7.224-7.165 18.942 0 26.173l95.196 95.962z m177.646-65.67c10.255 0 18.555-8.306 18.555-18.556V133.732c0-10.25-8.299-18.556-18.555-18.556-10.257 0-18.558 8.305-18.558 18.556v136.077c0 10.25 8.3 18.556 18.558 18.556z m-186.369 393.4l-97.026 95.679a18.283 18.283 0 0 0 0 26.106c7.304 7.212 19.148 7.212 26.457 0l97.026-95.691a18.289 18.289 0 0 0 0-26.094c-7.31-7.212-19.16-7.212-26.457 0z m180.183-319.177c-81.992 0-148.447 66.462-148.447 148.447 0 81.986 66.455 148.453 148.447 148.453s148.447-66.467 148.447-148.453c0-81.985-66.455-148.447-148.447-148.447z m0 259.782c-61.49 0-111.336-49.845-111.336-111.334 0-61.49 49.845-111.336 111.336-111.336s111.335 49.846 111.335 111.336S568.98 622.37 507.488 622.37z m195.597 58.574c-7.236-7.2-18.954-7.2-26.191 0-7.225 7.176-7.225 18.834 0 26.021l95.992 95.438c7.225 7.2 18.944 7.2 26.167 0 7.237-7.176 7.237-18.846 0-26.023l-95.968-95.436z m190.174-180.516l-138.638-0.2c-10.437-0.018-18.894 8.44-18.87 18.878 0.014 10.444 8.48 18.918 18.932 18.936l138.624 0.2c10.45 0.012 18.895-8.44 18.895-18.883-0.025-10.438-8.505-18.912-18.943-18.93z m-194.91-146.436l96.222-96.221c7.236-7.248 7.236-18.997 0-26.246-7.248-7.243-19.003-7.243-26.25 0l-96.212 96.223c-7.248 7.248-7.248 18.996 0 26.244 7.25 7.244 18.992 7.244 26.24 0zM284.95 517.352c-0.018-10.273-8.342-18.614-18.592-18.632l-136.15-0.2c-10.25-0.012-18.556 8.305-18.537 18.58 0.011 10.28 8.342 18.622 18.592 18.64l136.15 0.193c10.25 0.017 18.549-8.299 18.537-18.58z"
+                            p-id="3541"
+                        ></path>
+                    </svg>
+                </a>
+                <a class="QMPlayer--mobile_detail__footer__control QMPlayer--mobile_detail__footer__svg">
+                    <svg class="icon_svg" viewBox="0 0 1024 1024">
+                        <path
+                            d="M741.952 352.896v318.208a45.952 45.952 0 0 1-91.968 0V352.896a45.952 45.952 0 1 1 91.968 0m-367.872-45.888v364.032a46.08 46.08 0 0 1-92.032 0v-300.16a64 64 0 0 1 64-64h27.904l0.128 0.128M190.016 430.08v118.016a45.952 45.952 0 1 1-91.904 0v-54.08a64 64 0 0 1 64-64h27.968v0.064m735.808 45.952v72.064a46.016 46.016 0 1 1-91.968 0V475.968a46.016 46.016 0 0 1 91.968 0M558.08 183.936v610.176a46.08 46.08 0 0 1-92.032 0V247.872a64 64 0 0 1 64-64h28.032"
+                            p-id="2550"
+                        ></path>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="QMPlayer--mobile_detail__progress">
+                <div class="QMPlayer--mobile_detail__progress__current">0:00</div>
+                <div class="QMPlayer--mobile_detail__progress__bar">
+                    <div class="QMPlayer--mobile_detail__progress__bar__point"></div>
+                </div>
+                <div class="QMPlayer--mobile_detail__progress__end">0:00</div>
             </div>
             <div class="QMPlayer--mobile_detail__control">
                 <a class="QMPlayer--mobile_detail__control__svg">
@@ -686,13 +889,12 @@
                 <a class="QMPlayer--mobile_detail__control__svg">
                     <svg class="icon_svg" viewBox="0 0 16 16">
                         <path
-                            d="M9.741.85a.75.75 0 0 1 .375.65v13a.75.75 0 0 1-1.125.65l-6.925-4a3.642 3.642 0 0 1-1.33-4.967 3.639 3.639 0 0 1 1.33-1.332l6.925-4a.75.75 0 0 1 .75 0zm-6.924 5.3a2.139 2.139 0 0 0 0 3.7l5.8 3.35V2.8l-5.8 3.35zm8.683 4.29V5.56a2.75 2.75 0 0 1 0 4.88z"
+                            d="M15 15H1v-1.5h14V15zm0-4.5H1V9h14v1.5zm-14-7A2.5 2.5 0 0 1 3.5 1h9a2.5 2.5 0 0 1 0 5h-9A2.5 2.5 0 0 1 1 3.5zm2.5-1a1 1 0 0 0 0 2h9a1 1 0 1 0 0-2h-9z"
                         ></path>
-                        <path d="M11.5 13.614a5.752 5.752 0 0 0 0-11.228v1.55a4.252 4.252 0 0 1 0 8.127v1.55z"></path>
                     </svg>
                 </a>
             </div>
-        </div>
+        </div> -->
     </body>
     <script>
         if (isMobile()) {
