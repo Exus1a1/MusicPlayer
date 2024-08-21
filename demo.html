@@ -87,6 +87,11 @@
             }
         </style>
         <style>
+            :root {
+                --main-color: red;
+            }
+        </style>
+        <style>
             .QMPlayer {
                 position: fixed;
                 bottom: 0;
@@ -94,7 +99,7 @@
                 height: 0.9rem;
                 min-width: 6rem;
                 padding: 0.15rem;
-                background-color: black;
+                background-color: var(--main-color);
             }
 
             .QMPlayer__header {
@@ -142,7 +147,7 @@
                 width: 2rem;
                 justify-content: space-around;
                 align-items: center;
-                padding: 5px 0;
+                padding: 0.05rem 0;
             }
 
             .QMPlayer__main__control__svg {
@@ -150,6 +155,7 @@
                 width: 0.2rem;
                 height: 0.2rem;
                 color: rgb(179, 179, 179);
+                position: relative;
             }
 
             .QMPlayer__main__control__svg:hover {
@@ -311,24 +317,25 @@
                 bottom: 0.3rem;
                 font-size: 0.14rem;
                 color: #fff;
-                display: flex;
+                display: none;
                 flex-direction: column;
                 text-align: center;
                 left: 50%;
                 transform: translateX(-50%);
                 width: 1.1rem;
                 height: 1.25rem;
-                background-color: #1db954;
+                background-color: #121212;
             }
 
             .QMPlayer__list {
                 position: fixed;
+                transition: 0.5s;
                 font-size: 0.2rem;
                 bottom: 0.9rem;
                 height: calc(100vh - 0.9rem);
                 min-height: 8rem;
                 width: 2.4rem;
-                right: 0;
+                right: -2.4rem;
                 background-color: #fff;
             }
 
@@ -351,6 +358,33 @@
                 top: 50%;
                 transform: translateY(-50%);
             }
+            .volumn_slide {
+                position: absolute;
+                top: 50%;
+                left: 0.28rem;
+                transform: translateY(-50%);
+                width: 0.6rem;
+                height: 0.03rem;
+                background-color: rgb(179, 179, 179);
+                border-radius: 0.1rem;
+            }
+            .volumn_slide__slidebar {
+                position: relative;
+                width: 0;
+                height: 0.03rem;
+                background-color: #1db954;
+                border-radius: 0.01rem;
+            }
+            .volumn_slide__slidebar__point {
+                width: 0.1rem;
+                height: 0.1rem;
+                border-radius: 50%;
+                background-color: #fff;
+                position: absolute;
+                right: -0.05rem;
+                top: 50%;
+                transform: translateY(-50%);
+            }
         </style>
         <div class="QMPlayer">
             <audio src="QMPlayer__audio" id="QMPlayer__audio"></audio>
@@ -361,7 +395,7 @@
                 <div class="QMPlayer__detail__lyrics">歌词位?</div>
                 <img src="./img/77A7FB8DF3AED8278E65A291928275BA.gif" class="QMPlayer__detail__cover" />
             </div>
-            <div class="QMPlayer__list">播放列表</div>
+            <div class="QMPlayer__list" id="list_popup">播放列表</div>
             <div class="QMPlayer__header">
                 <img src="./img/I' am OK_109951164124479906.png" class="QMPlayer__header__cover" />
                 <div class="QMPlayer__header__expand">
@@ -432,6 +466,59 @@
                         </div>
                     </a>
                 </div>
+                <script>
+                    const volumnSlide = document.getElementById('volumn_slide');
+                    const volumnSlideBar = document.getElementById('volumn_slide__slidebar');
+                    const volumnSlidePoint = document.getElementById('volumn_slide__slidebar__point');
+                    // 音量控制
+                    const audio = document.getElementById('QMPlayer__audio');
+                    audio.volume = 0.5;
+                    volumnSlideBar.style.width = `${audio.volume * 100}%`;
+
+                    let isVolumnDragging = false;
+                    let volumnStartX = 0;
+                    let volumnSlideRect = volumnSlide.getBoundingClientRect();
+
+                    volumnSlidePoint.addEventListener('mousedown', event => {
+                        isVolumnDragging = true;
+                        volumnStartX = event.clientX - volumnSlideRect.left;
+                        volumnSlidePoint.style.visibility = 'initial'; // 拖动开始时显示进度点
+                    });
+
+                    document.addEventListener('mousemove', event => {
+                        if (!isVolumnDragging) return;
+
+                        const offsetX = event.clientX - volumnSlideRect.left;
+                        const volumn = Math.min(1, Math.max(0, offsetX / volumnSlideRect.width));
+                        updateVolumn(volumn);
+                    });
+
+                    volumnSlide.addEventListener('mouseenter', () => {
+                        if (!isVolumnDragging) {
+                            volumnSlidePoint.style.visibility = 'initial';
+                        }
+                    });
+
+                    document.addEventListener('mouseup', () => {
+                        isVolumnDragging = false;
+                        // 拖动结束后隐藏进度点（如果鼠标不在进度条容器内）
+                        if (!volumnSlide.contains(document.activeElement)) {
+                            volumnSlidePoint.style.visibility = 'hidden';
+                        }
+                    });
+
+                    volumnSlide.addEventListener('click', event => {
+                        const offsetX = event.clientX - volumnSlideRect.left;
+                        const volumn = Math.min(1, Math.max(0, offsetX / volumnSlideRect.width));
+                        updateVolumn(volumn);
+                    });
+
+                    function updateVolumn(volumn) {
+                        // 更新进度条的宽度
+                        volumnSlideBar.style.width = `${volumn * 100}%`;
+                        audio.volume = volumn;
+                    }
+                </script>
                 <div class="QMPlayer__main__progress" id="progress-container">
                     <div class="QMPlayer__main__progress__current">0:00</div>
                     <div class="QMPlayer__main__progress__bar" id="progress-bar">
@@ -451,6 +538,7 @@
                     progressPoint.addEventListener('mousedown', event => {
                         isDragging = true;
                         startX = event.clientX - progressBarContainerRect.left;
+                        console.log(startX);
                         progressPoint.style.visibility = 'initial'; // 拖动开始时显示进度点
                     });
 
@@ -499,7 +587,7 @@
                         ></path>
                     </svg>
                 </a>
-                <a class="QMPlayer__footer__control QMPlayer__footer__svg">
+                <a class="QMPlayer__footer__control QMPlayer__footer__svg" id="main_color_control">
                     <svg class="icon_svg" viewBox="0 0 1024 1024">
                         <path
                             d="M204.4 524.9c-14.5 1.5-26.2 13.2-27.7 27.7-2.1 19.9 14.6 36.7 34.6 34.6 14.5-1.5 26.2-13.2 27.8-27.8 2-19.9-14.8-36.6-34.7-34.5zM265.4 473.7c21.8-1.9 39.4-19.5 41.4-41.4 2.5-28.5-21.2-52.3-49.7-49.7-21.8 1.9-39.4 19.5-41.4 41.4-2.6 28.4 21.2 52.2 49.7 49.7zM415.8 266.9c-28.5 1.8-51.6 24.9-53.4 53.4-2.2 34.5 26.4 63.1 60.9 60.9 28.5-1.8 51.6-24.9 53.4-53.4 2.1-34.6-26.4-63.1-60.9-60.9zM621.9 253.8c-35.1 2.2-63.4 30.6-65.6 65.6-2.7 42.4 32.4 77.6 74.8 74.8 35.1-2.2 63.4-30.6 65.6-65.6 2.8-42.4-32.3-77.5-74.8-74.8zM966.5 276.4c-0.5-7.6-4-14.6-9.8-19.6l-0.7-0.6c-5.2-4.5-11.9-7-18.8-7-8.3 0-16.2 3.6-21.6 9.9L574 652.4l-43.5 85.5 1.1 0.9-4.9 11.3 11.1-5.9 1.5 1.3 78-54.3 342.3-394c5-5.8 7.4-13.2 6.9-20.8z"
@@ -510,7 +598,7 @@
                             p-id="1519"
                         />
                     </svg>
-                    <div style="left: -20px" class="QMPlayer__footer__control__popup">
+                    <div class="QMPlayer__footer__control__popup" id="main_color_popup">
                         <span>颜色1</span>
                         <span>颜色2</span>
                         <span>颜色3</span>
@@ -526,25 +614,52 @@
                         ></path>
                     </svg>
                 </a>
-                <a class="QMPlayer__footer__control QMPlayer__footer__svg">
+                <a class="QMPlayer__footer__control QMPlayer__footer__svg" id="frequency_spectrum_control">
                     <svg class="icon_svg" viewBox="0 0 1024 1024">
                         <path
                             d="M741.952 352.896v318.208a45.952 45.952 0 0 1-91.968 0V352.896a45.952 45.952 0 1 1 91.968 0m-367.872-45.888v364.032a46.08 46.08 0 0 1-92.032 0v-300.16a64 64 0 0 1 64-64h27.904l0.128 0.128M190.016 430.08v118.016a45.952 45.952 0 1 1-91.904 0v-54.08a64 64 0 0 1 64-64h27.968v0.064m735.808 45.952v72.064a46.016 46.016 0 1 1-91.968 0V475.968a46.016 46.016 0 0 1 91.968 0M558.08 183.936v610.176a46.08 46.08 0 0 1-92.032 0V247.872a64 64 0 0 1 64-64h28.032"
                             p-id="2550"
                         ></path>
                     </svg>
-                    <div class="QMPlayer__footer__control__popup">
+                    <div class="QMPlayer__footer__control__popup" id="frequency_spectrum_popup">
                         <span>显示频谱</span>
                         <span>开启双声道模式?</span>
                     </div>
                 </a>
-                <a class="QMPlayer__footer__control">
+                <a class="QMPlayer__footer__control" id="list_control">
                     <svg class="icon_svg" viewBox="0 0 16 16">
                         <path
                             d="M15 15H1v-1.5h14V15zm0-4.5H1V9h14v1.5zm-14-7A2.5 2.5 0 0 1 3.5 1h9a2.5 2.5 0 0 1 0 5h-9A2.5 2.5 0 0 1 1 3.5zm2.5-1a1 1 0 0 0 0 2h9a1 1 0 1 0 0-2h-9z"
                         ></path>
                     </svg>
                 </a>
+                <script>
+                    const main_color_popup = document.getElementById('main_color_popup');
+                    const frequency_spectrum_popup = document.getElementById('frequency_spectrum_popup');
+                    const list_popup = document.getElementById('list_popup');
+                    const main_color_control = document.getElementById('main_color_control');
+                    const frequency_spectrum_control = document.getElementById('frequency_spectrum_control');
+                    const list_control = document.getElementById('list_control');
+                    let isMainColorPopupVisible = false;
+                    let isFrequencySpectrumPopupVisible = false;
+                    let isListPopupVisible = false;
+                    main_color_control.addEventListener('click', () => {
+                        main_color_popup.style.display = isMainColorPopupVisible ? 'none' : 'flex';
+                        isMainColorPopupVisible = !isMainColorPopupVisible;
+                        frequency_spectrum_popup.style.display = 'none';
+                        isFrequencySpectrumPopupVisible = false;
+                    });
+                    frequency_spectrum_control.addEventListener('click', () => {
+                        frequency_spectrum_popup.style.display = isFrequencySpectrumPopupVisible ? 'none' : 'flex';
+                        isFrequencySpectrumPopupVisible = !isFrequencySpectrumPopupVisible;
+                        main_color_popup.style.display = 'none';
+                        isMainColorPopupVisible = false;
+                    });
+                    list_control.addEventListener('click', () => {
+                        list_popup.style.right = isListPopupVisible ? '-2.4rem' : '0';
+                        isListPopupVisible = !isListPopupVisible;
+                    });
+                </script>
             </div>
         </div>
         <style>
@@ -561,11 +676,11 @@
             }
             .QMPlayer--mobile__cover {
                 display: block;
-                border-radius: 2px;
+                border-radius: 0.02rem;
                 width: 0.4rem;
                 height: 0.4rem;
                 border-radius: 0.2rem;
-                margin-right: 15px;
+                margin-right: 0.15rem;
             }
             .QMPlayer--mobile__name {
                 font-size: 0.13rem;
@@ -685,7 +800,7 @@
                 margin: 0 auto 0.3rem;
                 height: 0.03rem;
                 background-color: rgb(179, 179, 179);
-                border-radius: 1px;
+                border-radius: 0.01rem;
             }
 
             .QMPlayer--mobile_detail__progress__bar {
@@ -765,8 +880,8 @@
             }
 
             .QMPlayer--mobile_detail__footer .QMPlayer--mobile_detail__footer__svg {
-                width: 22px;
-                height: 22px;
+                width: 0.22rem;
+                height: 0.22rem;
             }
 
             .QMPlayer--mobile_detail__control {
