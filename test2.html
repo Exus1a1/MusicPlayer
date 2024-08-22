@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Audio Spectrum Visualization</title>
+        <style>
+            canvas {
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="spectrumCanvas" width="800" height="400"></canvas>
+        <script>
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            let analyser;
+
+            function loadAudio(url) {
+                return fetch(url)
+                    .then(response => response.arrayBuffer())
+                    .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer));
+            }
+
+            function createAnalyser() {
+                const analyser = audioContext.createAnalyser();
+                analyser.fftSize = 2048;
+                return analyser;
+            }
+
+            function drawSpectrum(analyser, canvas) {
+                const ctx = canvas.getContext('2d');
+                const bufferLength = analyser.frequencyBinCount;
+                const dataArray = new Uint8Array(bufferLength);
+
+                function draw() {
+                    requestAnimationFrame(draw);
+                    analyser.getByteFrequencyData(dataArray);
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.fillStyle = 'rgb(0, 0, 0)';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                    const barWidth = (canvas.width / bufferLength) * 2.5;
+                    let barHeight;
+                    let x = 0;
+
+                    for (let i = 0; i < bufferLength; i++) {
+                        barHeight = dataArray[i];
+                        ctx.fillStyle = 'rgb(' + (barHeight + 100) + ',50,50)';
+                        ctx.fillRect(x, canvas.height - barHeight / 2, barWidth, barHeight / 2);
+                        x += barWidth + 1;
+                    }
+                }
+
+                draw();
+            }
+
+            function connectAudioSourceToAnalyser(audioBuffer, canvas) {
+                const source = audioContext.createBufferSource();
+                source.buffer = audioBuffer;
+
+                analyser = createAnalyser();
+
+                source.connect(analyser);
+                analyser.connect(audioContext.destination);
+
+                drawSpectrum(analyser, canvas);
+
+                source.start();
+            }
+
+            loadAudio('hello.mp4')
+                .then(audioBuffer => {
+                    const leftChannelData = audioBuffer.getChannelData(0);
+                    const rightChannelData = audioBuffer.getChannelData(1);
+
+                    // 创建一个新的AudioBuffer，只包含左声道数据
+                    const leftAudioBuffer = audioContext.createBuffer(
+                        audioBuffer.numberOfChannels,
+                        audioBuffer.length,
+                        audioBuffer.sampleRate,
+                    );
+                    leftAudioBuffer.getChannelData(0).set(leftChannelData);
+
+                    connectAudioSourceToAnalyser(leftAudioBuffer, document.getElementById('spectrumCanvas'));
+                })
+                .catch(error => console.error(error));
+        </script>
+    </body>
+</html>

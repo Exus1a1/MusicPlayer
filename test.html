@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Simple Spectrum Visualizer</title>
+        <style>
+            canvas {
+                display: block;
+                margin: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="spectrumCanvas" width="1800" height="200"></canvas>
+
+        <script>
+            // 创建音频上下文
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+            // 加载音频文件
+            const audioElement = document.createElement('audio');
+            audioElement.src = 'hello.mp4'; // 替换为你的音频文件路径
+            audioElement.crossOrigin = 'anonymous';
+            // 创建左声道音频源
+            const leftSource = audioContext.createMediaElementSource(audioElement);
+            // 创建右声道音频源
+            const rightSource = audioContext.createMediaElementSource(audioElement);
+
+            // 创建左声道分析器节点
+            const leftAnalyser = audioContext.createAnalyser();
+            leftAnalyser.fftSize = 64; // FFT窗口大小
+            leftSource.connect(leftAnalyser);
+
+            // 创建右声道分析器节点
+            const rightAnalyser = audioContext.createAnalyser();
+            rightAnalyser.fftSize = 64; // FFT窗口大小
+            rightSource.connect(rightAnalyser);
+
+            const canvas = document.getElementById('spectrumCanvas');
+            const ctx = canvas.getContext('2d');
+            const barWidth = (canvas.width / 50) * 1; // 减小柱状图宽度
+            let x = 0;
+
+            // 获取频域数据
+            const bufferLength = leftAnalyser.frequencyBinCount;
+            const leftDataArray = new Uint8Array(bufferLength);
+            const rightDataArray = new Uint8Array(bufferLength);
+
+            // 绘制频谱
+            function draw() {
+                requestAnimationFrame(draw);
+
+                leftAnalyser.getByteFrequencyData(leftDataArray);
+                rightAnalyser.getByteFrequencyData(rightDataArray);
+
+                // 绘制左侧频谱
+                for (let i = 0; i < 25; i++) {
+                    const barHeight = leftDataArray[25 - i];
+                    ctx.fillStyle = 'red';
+                    ctx.fillRect(x, canvas.height - barHeight / 2, barWidth, barHeight / 2);
+                    x += barWidth + 1;
+                }
+
+                // 绘制右侧频谱
+                x = canvas.width - barWidth;
+                for (let i = 0; i < 25; i++) {
+                    const barHeight = rightDataArray[25 - i];
+                    ctx.fillStyle = 'blue';
+                    ctx.fillRect(x, canvas.height - barHeight / 2, barWidth, barHeight / 2);
+                    x -= barWidth + 1;
+                }
+            }
+
+            document.addEventListener('click', () => {
+                // 播放音频
+                draw();
+                console.log('play');
+                audioElement.play();
+            });
+            // 播放音频
+            audioElement.play();
+        </script>
+        <!-- <script>
+            // 创建音频上下文
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+            // 加载音频文件
+            const audioElement = document.createElement('audio');
+            audioElement.src = 'hello.mp4'; // 替换为你的音频文件路径
+            audioElement.crossOrigin = 'anonymous';
+
+            // 创建音频源
+            const source = audioContext.createMediaElementSource(audioElement);
+            source.connect(audioContext.destination);
+
+            // 创建分析器节点
+            const analyser = audioContext.createAnalyser();
+            analyser.fftSize = 64; // FFT窗口大小
+            source.connect(analyser);
+
+            // 获取频域数据
+            const bufferLength = analyser.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+
+            // 绘制频谱
+            function draw() {
+                requestAnimationFrame(draw);
+
+                analyser.getByteFrequencyData(dataArray);
+                const canvas = document.getElementById('spectrumCanvas');
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                const barWidth = (canvas.width / 50) * 1; // 减小柱状图宽度
+                let barHeight;
+                let x = 0;
+
+                console.log(dataArray);
+                // 绘制左侧频谱
+                for (let i = 0; i < 25; i++) {
+                    barHeight = dataArray[25 - i];
+
+                    ctx.fillStyle = 'red';
+                    ctx.fillRect(x, canvas.height - barHeight / 2, barWidth, barHeight / 2);
+                    ctx.fillRect(canvas.width - x, canvas.height - barHeight / 2, barWidth, barHeight / 2);
+
+                    x += barWidth + 1;
+                }
+            }
+
+            document.addEventListener('click', () => {
+                // 播放音频
+                draw();
+                console.log('play');
+                audioElement.play();
+            });
+            // 播放音频
+            audioElement.play();
+        </script> -->
+    </body>
+</html>
