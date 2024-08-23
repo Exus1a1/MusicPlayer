@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>歌词滚动效果</title>
+    </head>
+    <body>
+        <canvas id="lyricsCanvas" width="800" height="200" style="border: 1px solid #000"></canvas>
+        <script>
+            const canvas = document.getElementById('lyricsCanvas');
+            const ctx = canvas.getContext('2d');
+
+            const lyrics = [
+                { text: '第一句歌词', time: 1000 },
+                { text: '第二句歌词', time: 3000 },
+                { text: '第三句歌词', time: 5000 },
+                // ... 更多歌词
+            ];
+
+            let currentLineIndex = 0;
+            let scrollSpeed = 1; // 滚动速度，可以根据需要调整
+            let startTime = null;
+            let yOffset = 0; // 歌词向上移动的距离
+            let isScrolling = false; // 标记是否正在滚动
+
+            function drawLyrics(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const elapsedTime = timestamp - startTime;
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                ctx.fillStyle = 'black';
+                ctx.font = '24px Arial';
+                ctx.textAlign = 'center';
+
+                let currentLine = '';
+                let nextLine = '';
+                let currentTime = 0;
+
+                for (let i = 0; i < lyrics.length; i++) {
+                    currentTime += lyrics[i].time;
+                    if (elapsedTime < currentTime) {
+                        if (i !== currentLineIndex) {
+                            currentLineIndex = i;
+                            isScrolling = true;
+                        }
+                        currentLine = lyrics[i].text;
+                        if (i + 1 < lyrics.length) {
+                            nextLine = lyrics[i + 1].text;
+                        }
+                        break;
+                    }
+                }
+
+                const lineHeight = 30; // 每行歌词的高度
+                const visibleHeight = canvas.height - 2 * scrollSpeed; // 可见高度
+
+                ctx.fillText(currentLine, canvas.width / 2, canvas.height / 2 + yOffset);
+
+                if (nextLine) {
+                    ctx.fillText(nextLine, canvas.width / 2, canvas.height / 2 + yOffset + lineHeight);
+                }
+
+                // 绘制之前的歌词
+                for (let i = currentLineIndex - 1; i >= 0; i--) {
+                    const line = lyrics[i].text;
+                    const y = canvas.height / 2 + yOffset - (currentLineIndex - i) * lineHeight;
+                    if (y + lineHeight > -scrollSpeed) {
+                        ctx.fillText(line, canvas.width / 2, y);
+                    } else {
+                        break;
+                    }
+                }
+
+                if (isScrolling) {
+                    yOffset -= scrollSpeed; // 更新歌词向上移动的距离
+
+                    // 当歌词滚动到顶部时停止滚动
+                    if (canvas.height / 2 + yOffset <= 0) {
+                        yOffset = 0;
+                        isScrolling = false;
+                    }
+                }
+
+                requestAnimationFrame(drawLyrics);
+            }
+
+            drawLyrics();
+        </script>
+    </body>
+</html>
