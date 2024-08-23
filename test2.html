@@ -12,6 +12,7 @@
     </head>
     <body>
         <canvas id="spectrumCanvas" width="800" height="400"></canvas>
+        <canvas id="spectrumCanvas2" width="800" height="400"></canvas>
         <script>
             const audioContext = new (window.AudioContext || window.webkitAudioContext)();
             let analyser;
@@ -82,7 +83,16 @@
                     );
                     leftAudioBuffer.getChannelData(0).set(leftChannelData);
 
+                    // 创建一个新的AudioBuffer，只包含右声道数据
+                    const rightAudioBuffer = audioContext.createBuffer(
+                        audioBuffer.numberOfChannels,
+                        audioBuffer.length,
+                        audioBuffer.sampleRate,
+                    );
+                    rightAudioBuffer.getChannelData(0).set(rightChannelData);
+
                     connectAudioSourceToAnalyser(leftAudioBuffer, document.getElementById('spectrumCanvas'));
+                    connectAudioSourceToAnalyser(rightAudioBuffer, document.getElementById('spectrumCanvas2'));
                 })
                 .catch(error => console.error(error));
         </script>

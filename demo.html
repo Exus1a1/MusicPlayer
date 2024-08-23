@@ -86,7 +86,7 @@
                 }
             }
         </style>
-        <style>
+        <!-- <style>
             :root {
                 --main-color: red;
             }
@@ -661,7 +661,7 @@
                     });
                 </script>
             </div>
-        </div>
+        </div> -->
         <style>
             .QMPlayer--mobile {
                 position: fixed;
@@ -705,8 +705,8 @@
                 width: 0.22rem;
                 height: 0.22rem;
                 position: absolute;
-                left: 50.2%;
-                top: 50.5%;
+                left: 51%;
+                top: 50%;
                 transform: translate(-50%, -50%);
                 color: #fff;
                 border-radius: 50%;
@@ -728,14 +728,27 @@
                 height: 0.18rem;
                 color: rgb(179, 179, 179);
             }
+            .QMPlayer--mobile__play__progress {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                left: 0;
+                top: 0;
+                border-radius: 50%;
+                transform-origin: center;
+                background-color: #fff;
+            }
         </style>
-        <!-- <div class="QMPlayer--mobile">
-            <img src="./img/7499B896AD62005A68718D623C60E9EF.gif" class="QMPlayer--mobile__cover"></img>
+        <div class="QMPlayer--mobile" id="QMPlayer--mobile">
+            <img src="./img/7499B896AD62005A68718D623C60E9EF.gif" class="QMPlayer--mobile__cover" />
             <span class="QMPlayer--mobile__name">二十二</span>
             <span class="QMPlayer--mobile__singer">-</span>
             <span class="QMPlayer--mobile__singer">陶喆</span>
+            <audio>
+                <source />
+            </audio>
             <div class="QMPlayer--mobile__play">
-                <div class="QMPlayer--mobile__play__bg"></div>
+                <div class="QMPlayer--mobile__play__progress" id="QMPlayer--mobile__play__progress"></div>
                 <div class="QMPlayer--mobile__play__inner">
                     <a class="QMPlayer--mobile__play__inner__svg">
                         <svg class="icon_svg" viewBox="0 0 32 32">
@@ -753,16 +766,99 @@
                     ></path>
                 </svg>
             </a>
-        </div> -->
+        </div>
+        <script>
+            const playButton = document.querySelector('.QMPlayer--mobile__play');
+            const playButtonInner = document.querySelector('.QMPlayer--mobile__play__inner');
+            const playButtonInnerSvg = document.querySelector('.QMPlayer--mobile__play__inner__svg');
+            const audio = document.getElementById('QMPlayer__audio');
+            let isPlaying = false;
+            playButton.addEventListener('click', () => {
+                if (isPlaying) {
+                    audio.pause();
+                    playButtonInner.style.backgroundColor = 'rgb(179, 179, 179)';
+                    playButtonInnerSvg.style.display = 'block';
+                } else {
+                    audio.play();
+                    playButtonInner.style.backgroundColor = 'black';
+                    playButtonInnerSvg.style.display = 'none';
+                }
+                isPlaying = !isPlaying;
+            });
+
+            function getPathByDeg(deg) {
+                const xLength = Math.sin(deg);
+                const yLength = Math.cos(deg);
+                const xPos = 1 + xLength;
+                const yPos = 1 - yLength;
+                if (deg <= Math.PI / 2) {
+                    return `(
+                              50% 0%,
+                              ${(xPos / 2) * 100}% 0%,
+                              ${(xPos / 2) * 100}% ${(yPos / 2) * 100}%,
+                              50% 50%
+                            )`;
+                } else if (deg > Math.PI / 2 && deg <= Math.PI) {
+                    return `(
+                              50% 0%,
+                              100% 0%,
+                              100% ${(yPos / 2) * 100}%,
+                              ${(xPos / 2) * 100}% ${(yPos / 2) * 100}%,
+                              50% 50%
+                            )`;
+                } else if (deg > Math.PI && deg < (Math.PI / 2) * 3) {
+                    return `(
+                              ${(xPos / 2) * 100}% ${(yPos / 2) * 100}%,
+                              50% 50%,
+                              50% 0%,
+                              100% 0%,
+                              100% 100%,
+                              ${(xPos / 2) * 100}% 100%,
+                              ${(xPos / 2) * 100}% ${(yPos / 2) * 100}%,
+                              50% 50%
+                            )`;
+                } else if (deg >= (Math.PI / 2) * 3) {
+                    return `(
+                              ${(xPos / 2) * 100}% ${(yPos / 2) * 100}%,
+                              50% 50%,
+                              50% 0%,
+                              100% 0%,
+                              100% 100%,
+                              0% 100%,
+                              0% ${(yPos / 2) * 100}%,
+                              ${(xPos / 2) * 100}% ${(yPos / 2) * 100}%,
+                              50% 50%
+                            )`;
+                }
+            }
+            function draw() {
+                const path = getPathByDeg(currentDegree);
+                progressDom.style.clipPath = `polygon${path}`;
+                requestAnimationFrame(function () {
+                    currentDegree = (currentDegree + Math.PI / 180) % (2 * Math.PI);
+                    draw();
+                });
+                // const progressRatio = audio.currentTime / audio.duration; // 播放进度比例
+                // const currentDegree = progressRatio * 360; // 将播放进度转换为角度
+                // const path = getPathByDeg(currentDegree * (Math.PI / 180)); // 将角度转换为弧度
+                // progressDom.style.clipPath = `polygon(${path})`;
+                // requestAnimationFrame(function () {
+                //     draw();
+                // });
+            }
+
+            const progressDom = document.getElementById('QMPlayer--mobile__play__progress');
+            let currentDegree = 0;
+            draw();
+        </script>
         <style>
             .QMPlayer--mobile_detail {
                 position: fixed;
                 left: 0;
-                top: 0;
+                top: 100vh;
                 width: 100vw;
                 height: 100vh;
                 background-color: #121212;
-                transition-property: top;
                 transition-duration: 0.5s;
             }
             /* .QMPlayer--mobile_detail:hover {
@@ -809,7 +905,6 @@
                 position: relative;
                 background-color: #1db954;
             }
-
             .QMPlayer--mobile_detail__progress__bar__point {
                 width: 0.1rem;
                 height: 0.1rem;
@@ -857,8 +952,13 @@
                 font-size: 0.15rem;
             }
             .QMPlayer--mobile_detail__main__lyrics {
-                width: 100%;
-                height: 100%;
+                width: 60%;
+                height: 60%;
+                display: none;
+                position: absolute;
+                left: 50%;
+                top: 0.3rem;
+                transform: translateX(-50%);
                 background-color: #1db954;
             }
             .QMPlayer--mobile_detail__footer {
@@ -907,8 +1007,8 @@
                 color: #fff;
             }
         </style>
-        <!-- <div class="QMPlayer--mobile_detail">
-            <a class="QMPlayer--mobile_detail__collapse">
+        <div class="QMPlayer--mobile_detail" id="QMPlayer--mobile_detail">
+            <a class="QMPlayer--mobile_detail__collapse" id="QMPlayer--mobile_detail__collapse">
                 <svg class="icon_svg" viewBox="0 0 16 16">
                     <path
                         d="M.47 11.03a.75.75 0 0 0 1.06 0L8 4.56l6.47 6.47a.75.75 0 1 0 1.06-1.06L8 2.44.47 9.97a.75.75 0 0 0 0 1.06z"
@@ -917,13 +1017,35 @@
             </a>
             <div class="QMPlayer--mobile_detail__main">
                 <div class="QMPlayer--mobile_detail__main__info">
-                    <img src="./img/77A7FB8DF3AED8278E65A291928275BA.gif" class="QMPlayer--mobile_detail__main__info__cover" />
+                    <img
+                        src="./img/77A7FB8DF3AED8278E65A291928275BA.gif"
+                        class="QMPlayer--mobile_detail__main__info__cover"
+                        id="QMPlayer--mobile_detail__main__info__cover"
+                    />
+                    <div class="QMPlayer--mobile_detail__main__lyrics" id="QMPlayer--mobile_detail__main__lyrics"></div>
                     <div class="QMPlayer--mobile_detail__main__info__name">二十二</div>
                     <div class="QMPlayer--mobile_detail__main__info__singer">陶喆</div>
                 </div>
-                <div class="QMPlayer--mobile_detail__main__lyrics"></div>
             </div>
+            <script>
+                document.getElementById('QMPlayer--mobile').addEventListener('click', () => {
+                    document.getElementById('QMPlayer--mobile_detail').style.top = '0';
+                });
+                document.getElementById('QMPlayer--mobile_detail__collapse').addEventListener('click', () => {
+                    document.getElementById('QMPlayer--mobile_detail').style.top = '100vh';
+                });
+                const mobileDetailCover = document.getElementById('QMPlayer--mobile_detail__main__info__cover');
+                const mobileDetailLyrics = document.getElementById('QMPlayer--mobile_detail__main__lyrics');
+                mobileDetailCover.addEventListener('click', () => {
+                    mobileDetailLyrics.style.display = 'block';
+                    mobileDetailCover.style.display = 'none';
+                });
 
+                mobileDetailLyrics.addEventListener('click', () => {
+                    mobileDetailLyrics.style.display = 'none';
+                    mobileDetailCover.style.display = 'block';
+                });
+            </script>
             <div class="QMPlayer--mobile_detail__footer">
                 <a class="QMPlayer--mobile_detail__footer__control QMPlayer--mobile_detail__footer__svg">
                     <svg class="icon_svg" viewBox="0 0 1024 1024">
@@ -955,13 +1077,51 @@
                 </a>
             </div>
 
-            <div class="QMPlayer--mobile_detail__progress">
+            <div class="QMPlayer--mobile_detail__progress" id="progress-container">
                 <div class="QMPlayer--mobile_detail__progress__current">0:00</div>
-                <div class="QMPlayer--mobile_detail__progress__bar">
-                    <div class="QMPlayer--mobile_detail__progress__bar__point"></div>
+                <div class="QMPlayer--mobile_detail__progress__bar" id="progress-bar">
+                    <div class="QMPlayer--mobile_detail__progress__bar__point" id="progress-point"></div>
                 </div>
                 <div class="QMPlayer--mobile_detail__progress__end">0:00</div>
             </div>
+            <script>
+                const progressBarContainer = document.getElementById('progress-container');
+                const progressBar = document.getElementById('progress-bar');
+                const progressPoint = document.getElementById('progress-point');
+
+                let isDragging = false;
+                let startX = 0;
+                let progressBarContainerRect = progressBarContainer.getBoundingClientRect();
+
+                progressPoint.addEventListener('touchstart', event => {
+                    isDragging = true;
+                    startX = event.touches[0].clientX - progressBarContainerRect.left;
+                });
+
+                document.addEventListener('touchmove', event => {
+                    if (!isDragging) return;
+
+                    const offsetX = event.touches[0].clientX - progressBarContainerRect.left;
+                    const progress = Math.min(1, Math.max(0, offsetX / progressBarContainerRect.width));
+                    updateProgress(progress);
+                });
+
+                progressBarContainer.addEventListener('touchend', () => {
+                    isDragging = false;
+                    // 拖动结束后隐藏进度点（如果触摸点不在进度条容器内）
+                });
+
+                progressBarContainer.addEventListener('click', event => {
+                    const offsetX = event.clientX - progressBarContainerRect.left;
+                    const progress = Math.min(1, Math.max(0, offsetX / progressBarContainerRect.width));
+                    updateProgress(progress);
+                });
+
+                function updateProgress(progress) {
+                    // 更新进度条的宽度
+                    progressBar.style.width = `${progress * 100}%`;
+                }
+            </script>
             <div class="QMPlayer--mobile_detail__control">
                 <a class="QMPlayer--mobile_detail__control__svg">
                     <svg class="icon_svg" viewBox="0 0 16 16">
@@ -1009,7 +1169,7 @@
                     </svg>
                 </a>
             </div>
-        </div> -->
+        </div>
     </body>
     <script>
         if (isMobile()) {
