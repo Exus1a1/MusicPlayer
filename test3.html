@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>歌词滚动效果</title>
+        <style>
+            body {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+                font-family: Arial, sans-serif;
+            }
+
+            .lyrics-container {
+                overflow: hidden;
+                width: 50%;
+                border: 1px solid #ccc;
+                padding: 20px;
+                box-sizing: border-box;
+                position: relative;
+                height: 100px; /* 设置一个固定高度 */
+            }
+
+            .lyrics {
+                white-space: nowrap;
+                position: absolute;
+                top: 0;
+                transition: 0.5s;
+            }
+
+            .lyric-item {
+                display: inline-block;
+                padding: 5px;
+            }
+
+            .active {
+                color: red;
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="lyrics-container">
+            <div class="lyrics" id="lyrics">
+                <!-- 歌词将通过 JavaScript 动态设置样式 -->
+            </div>
+        </div>
+        <video src="test.mp4" id="audio" controls playsinline>
+            <track src="test.vtt" kind="subtitles" srclang="en" label="English" default />
+        </video>
+
+        <button onclick="togglePictureInPicture()">Toggle Picture-in-Picture</button>
+
+        <script>
+            const lyricsData = [
+                { time: 1, text: '这是第一句歌词' },
+                { time: 4, text: '这是第二句歌词' },
+                { time: 7, text: '这是第三句歌词' },
+                // 更多歌词数据...
+            ];
+
+            const video = document.getElementById('audio');
+            const lyricsContainer = document.getElementById('lyrics');
+            let lyricItems = createLyricItems();
+            let frontIndex = -1;
+
+            function createLyricItems() {
+                return lyricsData.map(item => createLyricItem(item.text));
+            }
+
+            function createLyricItem(text) {
+                const item = document.createElement('div');
+                item.style.display = 'block';
+                item.className = 'lyric-item';
+                item.textContent = text;
+                return item;
+            }
+            function findLastIndex(array, predicate) {
+                for (let i = array.length - 1; i >= 0; i--) {
+                    if (predicate(array[i])) {
+                        return i;
+                    }
+                }
+                return -1;
+            }
+            function updateLyrics() {
+                const currentTime = video.currentTime;
+                const currentLyricIndex = findLastIndex(lyricsData, item => currentTime >= item.time);
+                if (currentLyricIndex !== -1 && frontIndex !== currentLyricIndex) {
+                    lyricItems.forEach((item, index) => {
+                        if (index === currentLyricIndex) {
+                            item.classList.add('active');
+                        } else {
+                            item.classList.remove('active');
+                        }
+                    });
+
+                    // 更新歌词滚动位置
+                    const activeItem = lyricItems[currentLyricIndex];
+                    const activeItemHeight = activeItem.offsetTop;
+                    console.log(activeItemHeight);
+                    let newTop = activeItemHeight;
+
+                    if (newTop < 0) {
+                        newTop = 0;
+                    }
+                    lyricsContainer.style.top = `${-newTop}px`;
+                    frontIndex = currentLyricIndex;
+                }
+            }
+
+            lyricItems.forEach(item => lyricsContainer.appendChild(item));
+
+            video.addEventListener('timeupdate', updateLyrics);
+            video.addEventListener('loadedmetadata', () => {
+                video.play();
+            });
+
+            function togglePictureInPicture() {
+                if (video !== null && video.readyState >= 3) {
+                    if (video.exitPictureInPicture) {
+                        video.exitPictureInPicture();
+                    } else {
+                        video.requestPictureInPicture();
+                    }
+                }
+            }
+        </script>
+    </body>
+</html>

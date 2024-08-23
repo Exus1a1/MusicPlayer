@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Canvas Animation Demo with Picture-in-Picture</title>
+        <style>
+            body {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                height: 100vh;
+                margin: 0;
+            }
+            canvas {
+                border: 1px solid black;
+            }
+            video {
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                width: 200px;
+                height: 100px;
+            }
+            button {
+                margin-top: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="animationCanvas" width="800" height="200"></canvas>
+        <video id="pipVideo" playsinline></video>
+        <button id="startRecord">开始录制</button>
+        <button id="stopRecord">停止录制</button>
+        <button id="playPip">播放画中画</button>
+        <button id="pausePip">暂停画中画</button>
+
+        <script>
+            const canvas = document.getElementById('animationCanvas');
+            const ctx = canvas.getContext('2d');
+            let animationStarted = false;
+            let startTime = null;
+            const duration = 2000; // 动画持续时间，单位毫秒
+            const startX = 0;
+            const endX = canvas.width - 50; // 矩形宽度为50px
+            const rectHeight = 50;
+
+            let mediaRecorder;
+            let recordedBlobs;
+
+            function drawRectangle(x) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height); // 清除之前的绘制
+                ctx.fillStyle = 'red';
+                ctx.fillRect(x, canvas.height / 2 - rectHeight / 2, 50, rectHeight);
+            }
+
+            function animate(timestamp) {
+                if (!animationStarted) {
+                    startTime = timestamp;
+                    animationStarted = true;
+                }
+
+                const progress = (timestamp - startTime) / duration;
+                const currentX = startX + (endX - startX) * progress;
+
+                drawRectangle(currentX);
+
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                }
+            }
+
+            async function startRecording() {
+                const stream = canvas.captureStream(30); // 30 FPS
+                mediaRecorder = new MediaRecorder(stream);
+                recordedBlobs = [];
+
+                mediaRecorder.ondataavailable = event => {
+                    if (event.data && event.data.size > 0) {
+                        recordedBlobs.push(event.data);
+                    }
+                };
+
+                mediaRecorder.start();
+            }
+
+            function stopRecording() {
+                mediaRecorder.stop();
+            }
+
+            function playPip() {
+                const pipVideo = document.getElementById('pipVideo');
+                pipVideo.src = null;
+                pipVideo.srcObject = null;
+                const blob = new Blob(recordedBlobs, { type: 'video/webm' });
+                pipVideo.src = URL.createObjectURL(blob);
+                pipVideo.play();
+            }
+
+            function pausePip() {
+                const pipVideo = document.getElementById('pipVideo');
+                pipVideo.pause();
+            }
+
+            document.getElementById('startRecord').addEventListener('click', startRecording);
+            document.getElementById('stopRecord').addEventListener('click', stopRecording);
+            document.getElementById('playPip').addEventListener('click', playPip);
+            document.getElementById('pausePip').addEventListener('click', pausePip);
+
+            // 开始动画
+            requestAnimationFrame(animate);
+        </script>
+    </body>
+</html>
